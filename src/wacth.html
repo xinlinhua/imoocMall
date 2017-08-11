@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input id="textinput" type="test" name="userName" ="onChangess()">
+    <br>
+    <span id="info"></span>
+</body>
+<script>
+    var input = document.getElementById('textinput')
+    var obj = {
+        
+    }
+    Object.defineProperty(obj,'userName',{
+        configurable: true,
+        set:function(val){
+           
+             document.getElementById('info').innerText = val;
+             input.value = val;
+        },
+        get: function(){
+           
+            return obj.userName
+        }
+    })
+    input.addEventListener('keyup',function(){
+          obj.userName = this.value;
+    })
+    
+</script>
+</html>
