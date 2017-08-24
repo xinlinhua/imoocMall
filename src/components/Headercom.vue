@@ -10,8 +10,8 @@
         </symbol>
         <div class="navbar">
           <div class="navbar-left-container">
-            <a href="/">
-              <img class="navbar-brand-logo" src="static/logo.png"></a>
+            <a href="/" class="logo-con">
+              <img class="navbar-brand-logo" height="100%" src="static/logo2.png"></a>
           </div>
           <div class="navbar-right-container" style="display: flex;">
             <div class="navbar-menu-container">
@@ -43,3 +43,9 @@
         }
     }
 </script>
+<style>
+.logo-con{
+  width: 200px;
+  height: 56px;
+}
+</style>

@@ -1,21 +1,14 @@
 <template>
     <div>
       <Headercom></Headercom>
-      <!-- <div class="nav-breadcrumb-wrap">
-        <div class="container">
-          <nav class="nav-breadcrumb">
-            <a href="/">Home</a>
-            <span>Goods</span>
-          </nav>
-        </div>
-      </div> -->
+    
       <nav-bread ><span>Goods</span></nav-bread>
       <div class="accessory-result-page accessory-page">
         <div class="container">
           <div class="filter-nav">
             <span class="sortby">Sort by:</span>
             <a href="javascript:void(0)" class="default cur">Default</a>
-            <a href="javascript:void(0)" class="price">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
+            <a href="javascript:void(0)" @click="setSortBy" class="price">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
             <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
           </div>
           <div class="accessory-result">
@@ -23,7 +16,7 @@
             <div class="filter stopPop" id="filter" :class="{'filterby-show': filterBy}">
               <dl class="filter-price">
                 <dt>Price:</dt>
-                <dd><a href="javascript:void(0)" :class="{'cur':priceChecked === 'all'}" @click="priceChecked='all'">All</a></dd>
+                <dd><a href="javascript:void(0)"  :class="{'cur':priceChecked === 'all'}" @click="setPriceChecked('all')">All</a></dd>
 
                 <dd v-for="(price, index) in priceFilter" :key="index"  >
                   <a href="javascript:void(0)" @click="setPriceChecked(index)" :class="{'cur': priceChecked===index}">{{price.startPrice}} - {{price.endPrice}}</a>
@@ -38,11 +31,11 @@
                 <ul>
                   <li v-for="(item,index) in goodList" :key="index"> 
                     <div class="pic">
-                      <a href="#"><img v-lazy="'static/'+item.prodcutImg " alt=""></a>
+                      <a href="#"><img v-lazy="'static/'+item.productImage " alt=""></a>
                     </div>
-                    <div class="main">
+                    <div class="main" >
                       <div class="name">{{item.productName}}</div>
-                      <div class="price">{{item.prodcutPrice}}</div>
+                      <div class="price">{{item.salePrice}}</div>
                       <div class="btn-area">
                         <a href="javascript:;" class="btn btn--m">加入购物车</a>
                       </div>
@@ -50,6 +43,7 @@
                   </li>
                  
                 </ul>
+                <div v-infinite-scroll="loadMore" infiniter-scroll-disabled="busy" infiniter-scroll-distance="1">...</div>
               </div>
             </div>
           </div>
@@ -88,18 +82,41 @@
                 }],
                 priceChecked: 'all',
                 filterBy: false,
-                overlayFlag: false
+                overlayFlag: false,
+                sortFlog: true,
+                page: 1,
+                pageSize: 8,
+                busy: false,
+                priceFilterOnj:{}
             }
         },
         mounted(){
           this.getData();
         },
         methods:{
-            getData(){
-              axios.get('/goods').then(res=>{
-                this.goodList = res.data.result;
+            getData(flag){
+               let param = {
+                page: this.page,
+                pageSize: this.pageSize,
+                sort: this.sortFlog ? 1 : -1,
+                priceFilter: this.priceFilterOnj 
+               }
+               axios.get('/goods',{
+                params: param
+              }).then(res=>{
+                if(flag){
+                  if(res.data.length < this.pageSize){
+                    this.busy = true;
+                  }else{
+                    this.busy = false;
+                  }
+                  this.goodList = this.goodList.concat(res.data)
+                  
+                }else{
+                  this.goodList = res.data;
+                }
                 console.log( this.goodList)
-              })
+              }) 
             },
             showFilterPop(){
               this.filterBy = true;
@@ -112,7 +129,38 @@
             setPriceChecked(index){
               this.priceChecked = index;
               this.closePop();
-            }
+              this.priceFilterOnj = {
+   
+              };
+              if(this.priceChecked !== 'all' ){
+                 let item = this.priceFilter[index];
+                 this.priceFilterOnj = {
+                    startPrice: item.startPrice,
+                    endPrice: item.endPrice
+                };
+              }
+              this.page = 1;
+              console.log(this.priceFilterOnj)
+              this.getData();
+            },
+             
+            setSortBy(){
+              
+              this.sortFlog = !this.sortFlog;
+              this.page = 1;
+              this.getData();
+            },
+            loadMore(){
+            
+              setTimeout(()=>{
+                this.page++;
+                this.busy = true;
+                this.getData(true);
+              },500)
+            },
+            getPriceFilter(item){
+             
+            } 
         }
     }
 </script>

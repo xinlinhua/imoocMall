@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function (req,res,next) {
+/* app.use(function (req,res,next) {
   if(req.cookies.userId){
     next();
   }else{
@@ -39,7 +39,7 @@ app.use(function (req,res,next) {
           });
       }
   }
-});
+}); */
 
 app.use('/', index);
 app.use('/users', users);
@@ -62,5 +62,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;

@@ -9,9 +9,11 @@ var opn = require('opn')
 var path = require('path')
 var express = require('express')
 var webpack = require('webpack')
+var http = require('http')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
-
+var serverApp =  require('../server/bin/www')
+//var httpServer = http.createServer(serverApp);
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
 // automatically open browser, if not set will be false
@@ -22,13 +24,12 @@ var proxyTable = config.dev.proxyTable
 
 var app = express()
 
-var goodsData = require('../mock/goods.json')
-var router = express.Router()
-router.get("/goods", function (req,res) {
+// var goodsData = require('../mock/goods.json')
+//var router = express.Router()
+/*router.get("/goods", function (req,res) {
   res.json(goodsData)
-})
-app.use(router)
-
+}) */
+//app.use(router)
 
 var compiler = webpack(webpackConfig)
 
@@ -89,7 +90,6 @@ devMiddleware.waitUntilValid(() => {
 })
 
 var server = app.listen(port)
-
 module.exports = {
   ready: readyPromise,
   close: () => {
