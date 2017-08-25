@@ -37,13 +37,15 @@
                       <div class="name">{{item.productName}}</div>
                       <div class="price">{{item.salePrice}}</div>
                       <div class="btn-area">
-                        <a href="javascript:;" class="btn btn--m">加入购物车</a>
+                        <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
                       </div>
                     </div>
                   </li>
                  
                 </ul>
-                <div v-infinite-scroll="loadMore" infiniter-scroll-disabled="busy" infiniter-scroll-distance="1">...</div>
+                <div v-infinite-scroll="loadMore" infiniter-scroll-disabled="busy" infiniter-scroll-distance="1">
+                  <img src="../assets/loading-spinning-bubbles.svg" v-show="loading" />
+                </div>
               </div>
             </div>
           </div>
@@ -87,11 +89,13 @@
                 page: 1,
                 pageSize: 8,
                 busy: false,
-                priceFilterOnj:{}
+                priceFilterOnj:{},
+                loading: true
             }
         },
         mounted(){
           this.getData();
+         
         },
         methods:{
             getData(flag){
@@ -101,9 +105,11 @@
                 sort: this.sortFlog ? 1 : -1,
                 priceFilter: this.priceFilterOnj 
                }
+               this.loading = true;
                axios.get('/goods',{
                 params: param
               }).then(res=>{
+                this.loading = false;
                 if(flag){
                   if(res.data.length < this.pageSize){
                     this.busy = true;
@@ -115,7 +121,7 @@
                 }else{
                   this.goodList = res.data;
                 }
-                console.log( this.goodList)
+           
               }) 
             },
             showFilterPop(){
@@ -160,6 +166,12 @@
             },
             getPriceFilter(item){
              
+            },
+            addCart(productId){
+               axios.post('/goods/addCart',{productId:productId}).then((res)=>{
+                //this.$message(res.result);
+                console.log(res.data.resultMessage);
+               })
             } 
         }
     }

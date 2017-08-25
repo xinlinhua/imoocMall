@@ -1,19 +1,30 @@
-const mongoose = require('mongoose')
+var mongoose = require('mongoose'),
+    DB_URL = 'mongodb://localhost:27017/imoocmall';
 
-mongoose.connect('mongodb://localhost:27017/imoocmall');
+/**
+ * 连接
+ */
+mongoose.connect(DB_URL);
 
-const goods = new mongoose.Schema({
-  productId: String,
-  productName: String,
-  salePrice: Number,
-  productImage:String,
-  productUrl: String
-})
+/**
+  * 连接成功
+  */
+mongoose.connection.on('connected', function () {    
+    console.log('Mongoose connection open to ' + DB_URL);  
+});    
 
+/**
+ * 连接异常
+ */
+mongoose.connection.on('error',function (err) {    
+    console.log('Mongoose connection error: ' + err);  
+});    
+ 
+/**
+ * 连接断开
+ */
+mongoose.connection.on('disconnected', function () {    
+    console.log('Mongoose connection disconnected');  
+});    
 
-const Models = {
-  Goods: mongoose.model('goods', goods)
-  
-}
-
-module.exports = Models
+module.exports = mongoose;
