@@ -8,7 +8,7 @@
           <div class="filter-nav">
             <span class="sortby">Sort by:</span>
             <a href="javascript:void(0)" class="default cur">Default</a>
-            <a href="javascript:void(0)" @click="setSortBy" class="price ">
+            <a href="javascript:void(0)" @click="setSortBy" class="price" :class="{'sort-up':sortFlag}">
               Price 
               <svg class="icon icon-arrow-short">
                 <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-short"></use>
@@ -56,10 +56,26 @@
           </div>
         </div>
       </div>
-      <Modal :mdShow="mdShow">
-        <p slot="message">请先登录，否则无法加入购物车 </p>
+      <Modal :mdShow="mdShow" v-on:close="closeModal">
+        <p slot="message">
+         
+          <span>请先登录，否则无法加入购物车 </span>
+        </p>
         <div slot="btnGroup">
-          <a href="" class="btn btn--m">关闭</a>
+          <a href="javascript:;" @click="mdShowCart = false" class="btn btn--m">关闭</a>
+        </div>
+      </Modal>
+       <Modal :mdShow="mdShowCart" v-on:close="closeModal">
+        <p slot="message">
+           <svg class="icon-status-ok">
+            <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
+          </svg>
+          <span>加入购物车成功 </span>
+          </p>
+        <div slot="btnGroup">
+          
+          <a href="javascript:;" @click="mdShowCart = false" class="btn btn--m">继续购物</a>
+          <router-link class="btn btn--m" to="/cart">查看购物车</router-link>
         </div>
       </Modal>
       <div class="md-overlay" v-show="overlayFlag" @click="closePop"></div>
@@ -104,7 +120,8 @@
                 busy: false,
                 priceFilterOnj:{},
                 loading: true,
-                mdShow: false
+                mdShow: false,
+                mdShowCart: false
             }
         },
         mounted(){
@@ -145,6 +162,7 @@
             closePop(){
               this.filterBy = false;
               this.overlayFlag = false;
+              this.mdShowCart = false;
             },
             setPriceChecked(index){
               this.priceChecked = index;
@@ -185,12 +203,21 @@
                
                axios.post('/goods/addCart',{productId:productId}).then((res)=>{
                   //console.log(res.data.resultMessage);
-                 
-                   this.$message({
+                  if(res.data.resultCode === '0'){
+                    this.mdShowCart = true;
+                    /*this.$message({
                         message: res.data.resultMessage,
                         type: 'warning'
-                    });
+                    });*/
+                  }else{
+                    this.mdShow = true;
+                  }
+                   
                })
+            },
+            closeModal(){
+              this.mdShow = false;
+              this.mdShowCart = false;
             } 
         }
     }
