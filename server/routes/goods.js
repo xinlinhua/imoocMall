@@ -5,7 +5,7 @@ var Goods = require('../models/goods');
 var User = require('../models/users');
 /* GET home page. */
 
-router.get('/', function(req, res, next) {
+router.get('/list', function(req, res, next) {
   //res.render('index', { title: 'Express,Very Goood111' });
     let page = parseInt(req.param('page'));
     let pageSize = parseInt(req.param('pageSize'));

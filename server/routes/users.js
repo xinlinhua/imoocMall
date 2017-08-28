@@ -19,9 +19,15 @@ router.post('/login', (req,res)=>{
           resultMessage: err.message
         })
       }else{
-        res.cookie('userId',doc.userId,{
+        var userId = doc.userId;
+        res.cookie('userId', userId,{
           path:'/',
-          maxAge: 1000*60/60
+          maxAge: 1000*60*60
+        })
+        var userName = doc.userName;
+        res.cookie('userName', userName,{
+          path:'/',
+          maxAge: 1000*60*60
         })
         //req.session.user = doc;
         res.json({
@@ -47,4 +53,26 @@ router.post('/logout',(req,res,next)=>{
     result: ''
   })
 })
+
+router.get('/checkLogin',(req,res,next)=>{
+
+  if(req.cookies.userId){
+      res.json({
+        resultCode: '0',
+        resultMessage: 'success',
+        result: {
+            userId: req.cookies.userId,
+            userName: req.cookies.userName
+        }
+      })
+  }else{
+      res.json({
+        resultCode: '1',
+        resultMessage: '未登录',
+        result: ''
+      })
+  }
+  
+})
+
 module.exports = router;

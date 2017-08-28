@@ -422,7 +422,9 @@
 .filter-nav a.cur, .filter-nav a:hover {
   color: #ee7a23;
 }
-
+.sort-up{
+  
+}
 .filter-nav .sort-up .icon-arrow-short {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);

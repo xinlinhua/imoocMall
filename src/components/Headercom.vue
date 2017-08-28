@@ -76,6 +76,9 @@
               nickName: '' 
             }
         },
+        mounted(){
+          this.checkLogin();
+        },
         methods:{
           login(){
               if(!this.userPwd){
@@ -98,13 +101,22 @@
               })
           },
           logOut(){
-            axios.post('/users/logout',(res)=>{
+            axios.post('/users/logout').then((res)=>{
               var resp = res.data;
               if(resp.resultCode === '0'){
                 this.nickName = '';
               }
             })
+          },
+          checkLogin(){
+            axios.get('/users/checkLogin').then((res)=>{
+              var resp = res.data;
+              if(resp.resultCode === '0'){
+                this.nickName =  resp.result.userName;
+              }
+            })
           }
+
         }
     }
 </script>

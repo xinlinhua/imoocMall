@@ -8,7 +8,12 @@
           <div class="filter-nav">
             <span class="sortby">Sort by:</span>
             <a href="javascript:void(0)" class="default cur">Default</a>
-            <a href="javascript:void(0)" @click="setSortBy" class="price">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
+            <a href="javascript:void(0)" @click="setSortBy" class="price ">
+              Price 
+              <svg class="icon icon-arrow-short">
+                <use  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-short"></use>
+              </svg>
+            </a>
             <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
           </div>
           <div class="accessory-result">
@@ -51,6 +56,12 @@
           </div>
         </div>
       </div>
+      <Modal :mdShow="mdShow">
+        <p slot="message">请先登录，否则无法加入购物车 </p>
+        <div slot="btnGroup">
+          <a href="" class="btn btn--m">关闭</a>
+        </div>
+      </Modal>
       <div class="md-overlay" v-show="overlayFlag" @click="closePop"></div>
       <Footercom></Footercom>
     </div>
@@ -59,12 +70,14 @@
     import axios from 'axios'
     import Headercom from '@/components/Headercom'
     import Footercom from '@/components/Footercom'
-     import NavBread from '@/components/NavBread'
+    import NavBread from '@/components/NavBread'
+    import Modal from '@/components/Modal'
     export default{
         components:{
           Headercom,
           Footercom,
-          NavBread
+          NavBread,
+          Modal
         },   
         data(){
             return {
@@ -85,12 +98,13 @@
                 priceChecked: 'all',
                 filterBy: false,
                 overlayFlag: false,
-                sortFlog: true,
+                sortFlag: true,
                 page: 1,
                 pageSize: 8,
                 busy: false,
                 priceFilterOnj:{},
-                loading: true
+                loading: true,
+                mdShow: false
             }
         },
         mounted(){
@@ -102,11 +116,11 @@
                let param = {
                 page: this.page,
                 pageSize: this.pageSize,
-                sort: this.sortFlog ? 1 : -1,
+                sort: this.sortFlag ? 1 : -1,
                 priceFilter: this.priceFilterOnj 
                }
                this.loading = true;
-               axios.get('/goods',{
+               axios.get('/goods/list',{
                 params: param
               }).then(res=>{
                 this.loading = false;
@@ -152,7 +166,7 @@
              
             setSortBy(){
               
-              this.sortFlog = !this.sortFlog;
+              this.sortFlag = !this.sortFlag;
               this.page = 1;
               this.getData();
             },
@@ -168,9 +182,14 @@
              
             },
             addCart(productId){
+               
                axios.post('/goods/addCart',{productId:productId}).then((res)=>{
-                //this.$message(res.result);
-                console.log(res.data.resultMessage);
+                  //console.log(res.data.resultMessage);
+                 
+                   this.$message({
+                        message: res.data.resultMessage,
+                        type: 'warning'
+                    });
                })
             } 
         }

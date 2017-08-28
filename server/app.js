@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-/* app.use(function (req,res,next) {
+ app.use(function (req,res,next) {
   if(req.cookies.userId){
     next();
   }else{
@@ -33,13 +33,13 @@ app.use(express.static(path.join(__dirname, 'public')));
           next();
       }else{
           res.json({
-            status:'10001',
-            msg:'当前未登录',
+            resultCode:'10001',
+            resultMessage:'当前未登录',
             result:''
           });
       }
   }
-}); */
+}); 
 
 app.use('/', index);
 app.use('/users', users);

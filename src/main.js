@@ -8,11 +8,15 @@ import Vuex from 'vuex'
 import VueLazyload from 'vue-lazyload'
 import infiniteScroll from  'vue-infinite-scroll'
 import {currency} from './util/currency'
+import ElementUI from 'element-ui'
+import { Message } from 'element-ui';
+import 'element-ui/lib/theme-default/index.css'
 
 import './assets/css/base.css'
 import './assets/css/checkout.css'
 import './assets/css/login.css'
 import './assets/css/product.css'
+
 
 Vue.use(infiniteScroll);
 Vue.use(Vuex);
@@ -23,7 +27,7 @@ Vue.use(VueLazyload, {
 
 Vue.filter("currency",currency);
 Vue.config.productionTip = false;
-
+Vue.use(ElementUI);
 const store = new Vuex.Store({
   state: {
     nickName:'',
