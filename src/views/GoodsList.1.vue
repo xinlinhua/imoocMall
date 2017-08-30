@@ -61,7 +61,7 @@
           <span>请先登录，否则无法加入购物车 </span>
         </p>
         <div slot="btnGroup">
-          <a href="javascript:;" @click="mdShow = false" class="btn btn--m">关闭</a>
+          <a href="javascript:;" @click="mdShowCart = false" class="btn btn--m">关闭</a>
         </div>
       </Modal>
        <Modal :mdShow="mdShowCart" v-on:close="closeModal">

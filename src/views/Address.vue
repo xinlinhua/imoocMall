@@ -95,7 +95,7 @@
             <div class="addr-list-wrap">
               <div class="addr-list">
                 <ul>
-                  <li>
+                  <li v-for="item in addressList" :key="item">
                     <dl>
                       <dt>Jack</dt>
                       <dd class="address">海淀区朝阳公园</dd>
@@ -205,10 +205,27 @@
 <style>
 </style>
 <script>
+  import axios from 'axios'
+  import Headercom from '@/components/Headercom'
+  import Footercom from '@/components/Footercom'
+  import NavBread from '@/components/NavBread'
+  import Modal from '@/components/Modal'
   export default{
       data(){
           return{
+            addressList: []
+          }
+      },
+      mounted(){
 
+      },
+      methods:{
+          getAddressList(){
+            axios.get('/users/addressList').then((resp)=>{
+              if(resp.data.resultCode){
+                this.addressList = resp.data.result;
+              }
+            })
           }
       }
   }

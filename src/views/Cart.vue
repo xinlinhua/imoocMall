@@ -1,44 +1,7 @@
 <template>
   <div>
-    <header class="header">
-      <symbol id="icon-cart" viewBox="0 0 38 32">
-        <title>cart</title>
-        <path class="path1" d="M37.759 0h-4.133c-0.733 0.004-1.337 0.549-1.434 1.255l-0.546 4.342c-0.081 0.484-0.496 0.849-0.997 0.849-0.005 0-0.009-0-0.014-0h-27.604c-0.003 0-0.007-0-0.011-0-1.674 0-3.031 1.357-3.031 3.031 0 0.34 0.056 0.666 0.159 0.971l2.52 8.062c0.385 1.194 1.486 2.043 2.785 2.043 0.126 0 0.25-0.008 0.372-0.023l22.983 0.002c0.515 0.131 0.626 0.768 0.626 1.283 0.005 0.044 0.009 0.095 0.009 0.146 0 0.501-0.294 0.933-0.718 1.134l-22.439 0.003c-0.354 0-0.642 0.287-0.642 0.642s0.287 0.642 0.642 0.642h22.745l0.131-0.071c0.919-0.392 1.551-1.287 1.551-2.33 0-0.058-0.002-0.116-0.006-0.173 0.021-0.108 0.033-0.24 0.033-0.376 0-1.072-0.732-1.973-1.724-2.23l-23.357-0.004c-0.063 0.008-0.135 0.013-0.209 0.013-0.719 0-1.332-0.455-1.566-1.093l-2.53-8.095c-0.048-0.154-0.076-0.332-0.076-0.515 0-0.973 0.782-1.764 1.752-1.778h27.657c1.159-0.004 2.112-0.883 2.232-2.011l0.547-4.345c0.010-0.083 0.078-0.147 0.161-0.152l4.133-0c0.354 0 0.642-0.287 0.642-0.642s-0.287-0.642-0.642-0.642z"></path>
-        <path class="path2" d="M31.323 9.69c-0.022-0.003-0.048-0.004-0.074-0.004-0.328 0-0.598 0.248-0.633 0.567l-0.809 7.268c-0.003 0.022-0.004 0.048-0.004 0.074 0 0.328 0.248 0.598 0.567 0.633l0.074 0c0.001 0 0.003 0 0.004 0 0.327 0 0.596-0.246 0.632-0.563l0.809-7.268c0.003-0.022 0.004-0.048 0.004-0.074 0-0.328-0.248-0.598-0.567-0.633z"></path>
-        <path class="path3" d="M27.514 25.594c-1.769 0-3.203 1.434-3.203 3.203s1.434 3.203 3.203 3.203c1.769 0 3.203-1.434 3.203-3.203s-1.434-3.203-3.203-3.203zM27.514 30.717c-1.060 0-1.92-0.86-1.92-1.92s0.86-1.92 1.92-1.92c1.060 0 1.92 0.86 1.92 1.92s-0.86 1.92-1.92 1.92z"></path>
-        <path class="path4" d="M9.599 25.594c-1.769 0-3.203 1.434-3.203 3.203s1.434 3.203 3.203 3.203c1.769 0 3.203-1.434 3.203-3.203s-1.434-3.203-3.203-3.203zM9.599 30.717c-1.060 0-1.92-0.86-1.92-1.92s0.86-1.92 1.92-1.92c1.060 0 1.92 0.86 1.92 1.92s-0.86 1.92-1.92 1.92z"></path>
-      </symbol>
-      <div class="navbar">
-        <div class="navbar-left-container">
-          <a href="/">
-            <img class="navbar-brand-logo" src="static/logo.png"></a>
-        </div>
-        <div class="navbar-right-container" style="display: flex;">
-          <div class="navbar-menu-container">
-            <!--<a href="/" class="navbar-link">我的账户</a>-->
-            <span class="navbar-link"></span>
-            <a href="javascript:void(0)" class="navbar-link">Login</a>
-            <a href="javascript:void(0)" class="navbar-link">Logout</a>
-            <div class="navbar-cart-container">
-              <span class="navbar-cart-count"></span>
-              <a class="navbar-link navbar-cart-link" href="/#/cart">
-                <svg class="navbar-cart-logo">
-                  <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-    <div class="nav-breadcrumb-wrap">
-      <div class="container">
-        <nav class="nav-breadcrumb">
-          <a href="/">Home</a>
-          <span>Goods</span>
-        </nav>
-      </div>
-    </div>
+    <Headercom> </Headercom>
+    <nav-bread ><span>Cart</span></nav-bread>
     <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1"
          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs>
@@ -94,41 +57,41 @@
               </ul>
             </div>
             <ul class="cart-item-list">
-              <li v-for="list in carList">
+              <li v-for="list in cartList">
                 <div class="cart-tab-1">
                   <div class="cart-item-check">
-                    <a href="javascipt:;" class="checkbox-btn item-check-btn" :class="{check: list.isCheck}" @click="checkBox(list)">
+                    <a href="javascipt:;" class="checkbox-btn item-check-btn" :class="{check: list.checked=== '1'}" @click="checkBox(list)">
                       <svg class="icon icon-ok">
                         <use xlink:href="#icon-ok"></use>
                       </svg>
                     </a>
                   </div>
                   <div class="cart-item-pic">
-                    <img :src="'/static/'+list.prodcutImg">
+                    <img :src="'/static/'+list.productImage" :alt="list.productImage" >
                   </div>
                   <div class="cart-item-title">
                     <div class="item-name">{{list.productName}}</div>
                   </div>
                 </div>
                 <div class="cart-tab-2">
-                  <div class="item-price">{{list.prodcutPrice}}</div>
+                  <div class="item-price">{{list.salePrice | currency('$')}}</div>
                 </div>
                 <div class="cart-tab-3">
                   <div class="item-quantity">
                     <div class="select-self select-self-open">
                       <div class="select-self-area">
                         <a class="input-sub" @click="decrement(list)">-</a>
-                        <span class="select-ipt">{{list.count}}</span>
+                        <span class="select-ipt">{{list.productNum}}</span>
                         <a class="input-add" @click="increment(list)">+</a>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="cart-tab-4">
-                  <div class="item-price-total">{{list.count*list.prodcutPrice}}</div>
+                  <div class="item-price-total">{{list.productNum*list.salePrice | currency('$')}}</div>
                 </div>
                 <div class="cart-tab-5">
-                  <div class="cart-item-opration">
+                  <div class="cart-item-opration"  @click="delCartComfirm(list.productId)">
                     <a href="javascript:;" class="item-edit-btn">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
@@ -145,7 +108,7 @@
             <div class="cart-foot-l">
               <div class="item-all-check">
                 <a href="javascipt:;" @click="checkAll">
-                  <span class="checkbox-btn item-check-btn" :class="{check: checkall}">
+                  <span class="checkbox-btn item-check-btn" :class="{check: checkAllFlag}">
                       <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
                   </span>
                   <span>Select all</span>
@@ -154,7 +117,7 @@
             </div>
             <div class="cart-foot-r">
               <div class="item-total">
-                Item total: <span class="total-price"> {{getAllPrice}}</span>
+                Item total: <span class="total-price"> {{getAllPrice | currency('$')}}</span>
               </div>
               <div class="btn-wrap">
                 <a class="btn btn--red">Checkout</a>
@@ -164,34 +127,16 @@
         </div>
       </div>
     </div>
-    <footer class="footer">
-      <div class="footer__wrap">
-        <div class="footer__secondary">
-          <div class="footer__inner">
-            <div class="footer__region">
-              <span>Region</span>
-              <select class="footer__region__select">
-                <option value="en-US">USA</option>
-                <option value="zh-CN">China</option>
-                <option value="in">India</option>
-              </select>
-            </div>
-            <div class="footer__secondary__nav">
-              <span>Copyright © 2017 IMooc All Rights Reserved.</span>
-              <a href="http://us.lemall.com/us/aboutUs.html">
-                About Us
-              </a>
-              <a href="http://us.lemall.com/us/termsofUse.html">
-                Terms &amp; Conditions
-              </a>
-              <a href="http://us.lemall.com/us/privacyPolicy.html">
-                Privacy Policy
-              </a>
-            </div>
-          </div>
-        </div>
+    <Modal :mdShow="modalComfirm" v-on:close="closeModal">
+      <p slot="message">
+        <span>你是否删除该商品 </span>
+      </p>
+      <div slot="btnGroup">
+        <a href="javascript:;" @click="delCart()" class="btn btn--m" >确认</a>
+        <a href="javascript:;" @click="modalComfirm = false" class="btn btn--m">关闭</a>
       </div>
-    </footer>
+    </Modal>
+    <Footercom> </Footercom>
   </div>
 </template>
 <style>
@@ -219,74 +164,134 @@
   }
 </style>
 <script>
+    import axios from 'axios'
+    import Headercom from '@/components/Headercom'
+    import Footercom from '@/components/Footercom'
+    import NavBread from '@/components/NavBread'
+    import Modal from '@/components/Modal'
     export default{
+         components:{
+          Headercom,
+          Footercom,
+          NavBread,
+          Modal
+        },   
         data(){
             return{
-              carList: [ {
-                "productId":"10002",
-                "productName":"小米笔记本",
-                "prodcutPrice":"3999",
-                "prodcutImg":"note.jpg",
-                count:1,
-                isCheck: false
-              },{
-                  "productId":"10001",
-                  "productName":"小米6",
-                  "prodcutPrice":"2499",
-                  "prodcutImg":"mi6.jpg",
-                   count:1,
-                  isCheck: false
-              }],
-              checkall: false,
-              selectList: [],
-              countPrice: 0
+              cartList: [ ],
+              countPrice: 0,
+              modalComfirm: false,
+              productId: ''
             }
         },
+        mounted(){
+          this.getCartList();
+        },
         methods:{
+          getCartList(){
+            axios.get('/users/cartList').then((res)=>{
+              if(res.data.resultCode === '0'){
+                this.cartList = res.data.result;
+              }
+            })
+          },
           getSelect(){
             this.selectList =  this.carList.filter(res =>{
               return res.isCheck === true;
             });
           },
           checkAll(){
-            this.checkall  = !this.checkall;
+            var flag   = !this.checkAllFlag;
           
-              this.carList.forEach(item =>{
-                item.isCheck = this.checkall;
-              })
-              this.getSelect();
+            this.cartList.forEach(item =>{
+              item.checked = flag ? '1' : '0';
+            })
+            //this.getSelect();
+            axios.post('/users/cartCheckAll',{
+                checkAll:  flag ? '1': '0' 
+             }).then((res)=>{
+                if(res.data.resultCode === '0'){
+
+                 console.log('success');
+                }
+             })
+
           },
           checkBox(item){
-            item.isCheck =  !item.isCheck;
-            var selectData = this.carList.filter(res =>{
+           
+            item.checked =  item.checked === '1' ? '0' : '1';
+            this.editCart(item);
+           /*  var selectData = this.cartList.filter(res =>{
               return res.isCheck === true;
             });
-            if(selectData.length === this.carList.length){
+            if(selectData.length === this.cartList.length){
               this.checkall = true;
             }else {
               this.checkall = false;
             } 
-            this.getSelect();
+            this.getSelect(); */
           },
           increment(item){
-            item.count++;
-            
+            item.productNum++;
+            this.editCart(item);
           },
           decrement(item){
-             item.count--;
-             item.count < 1 ? item.count=1 :  item.count=item.count;
+             item.productNum--;
+             item.productNum < 1 ? item.productNum=1 :  item.productNum=item.productNum;
+             this.editCart(item);
           },
-         
+          editCart(item){
+             axios.post('/users/cartEdit',{
+                productId: item.productId,
+                productNum: item.productNum,
+                checked: item.checked
+             }).then((res)=>{
+                if(res.data.resultCode === '0'){
+
+                 console.log('success');
+                }
+             })
+          },
+          delCartComfirm(productId){
+            this.modalComfirm = true;
+            this.productId = productId;
+          },
+          delCart(){
+             axios.post('/users/cartDel',{
+              productId: this.productId
+             }).then((res)=>{
+                if(res.data.resultCode === '0'){
+
+                  this.getCartList();
+                  this.modalComfirm = false;
+                }
+             })
+          },
+          closeModal(){
+            this.modalComfirm = false;
+          }
         },
         computed: {
            getAllPrice: function(){
                this.countPrice = 0;
-               this.selectList.forEach(item => {
-                
-                  this.countPrice += item.prodcutPrice*item.count;
+               this.cartList.forEach(item => {
+                  if(item.checked === '1'){
+                    this.countPrice += item.salePrice*item.productNum;
+                  }
+                  
               }) 
               
               return this.countPrice;
+          },
+          checkAllFlag(){
+              return this.checkedCount === this.cartList.length;
+          },
+          checkedCount(){
+              let i = 0
+              this.cartList.forEach(item => {
+                  if(item.checked === '1') i++;
+              }) 
+              return i;
           }
         }
     }
