@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Headercom> </Headercom>
+    <header-com> </header-com>
     <nav-bread ><span>Cart</span></nav-bread>
     <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1"
          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -120,7 +120,7 @@
                 Item total: <span class="total-price"> {{getAllPrice | currency('$')}}</span>
               </div>
               <div class="btn-wrap">
-                <a class="btn btn--red">Checkout</a>
+                <a class="btn btn--red" :class="{'btn--dis': checkedCount === 0}" @click="checkOut">Checkout</a>
               </div>
             </div>
           </div>
@@ -136,7 +136,7 @@
         <a href="javascript:;" @click="modalComfirm = false" class="btn btn--m">关闭</a>
       </div>
     </Modal>
-    <Footercom> </Footercom>
+    <footer-com> </footer-com>
   </div>
 </template>
 <style>
@@ -165,14 +165,14 @@
 </style>
 <script>
     import axios from 'axios'
-    import Headercom from '@/components/Headercom'
-    import Footercom from '@/components/Footercom'
+    import HeaderCom from '@/components/HeaderCom'
+    import FooterCom from '@/components/FooterCom'
     import NavBread from '@/components/NavBread'
     import Modal from '@/components/Modal'
     export default{
          components:{
-          Headercom,
-          Footercom,
+          HeaderCom,
+          FooterCom,
           NavBread,
           Modal
         },   
@@ -269,6 +269,11 @@
           },
           closeModal(){
             this.modalComfirm = false;
+          },
+          checkOut(){
+            if(this.checkedCount >0 ){
+              this.$router.push('/address')
+            }
           }
         },
         computed: {

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+require('./../util/util')
 var User = require('../models/users');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -201,5 +201,178 @@ router.get('/addressList',(req,res)=>{
           })
         }
     })
+})
+
+router.post('/delAddress',(req,res)=>{
+  let userId = req.cookies.userId, addressId = req.body.addressId;
+  User.update({
+    userId:userId
+  },{
+    $pull: {
+      'addressList': {
+        addressId: addressId
+      }
+    }
+  },function(err,doc){
+    if(err){
+      res.json({
+        resultCode: '1',
+        resultMessage: err.message,
+        result: ''
+      })
+    }else{
+      res.json({
+        resultCode: '0',
+        resultMessage: 'success',
+        result: ''
+      })
+    }
+  })
+})
+
+router.post('/setDefault',(req,res)=>{
+    let userId = req.cookies.userId, addressId = req.body.addressId;
+    User.findOne({userId: userId},function(err,doc){
+        if(err){
+          res.json({
+            resultCode: '1',
+            resultMessage: err.message,
+            result: '' 
+          })  
+        }else{
+          doc.addressList.forEach((item)=>{
+             if(item.addressId === addressId){
+                item.isDefault = true;
+             } else{
+                item.isDefault = false;
+             }
+          })
+          doc.save((err3,resp)=>{
+              if(err3){
+                  res.json({
+                      status: '1',
+                      msg: err3.message
+                  })
+              }else{
+                  res.json({
+                      resultCode: '0',
+                      resultMessage: 'success'
+                  })
+              }
+          })
+        }
+    })
+
+})
+
+
+//
+router.post('/payMent',(req,res)=>{
+    let userId = req.cookies.userId, addressId = req.body.addressId, orderTotal = req.body.orderTotal;
+    User.findOne({userId: userId},function(err,doc){
+        if(err){
+          res.json({
+            resultCode: '1',
+            resultMessage: err.message,
+            result: '' 
+          })  
+        }else{
+          var addressInfo = '',goodList=[];
+          doc.addressList.forEach((item)=>{
+             if(item.addressId === addressId){
+                addressInfo = item;
+             }
+          })
+          doc.cartList.forEach((item)=>{
+             if(item.checked === '1'){
+                goodList.push(item);
+             }
+          }) 
+          
+          var platform = '1001';
+          var r1 = Math.floor(Math.random()*10);
+          var r2 = Math.floor(Math.random()*10);
+
+          var sysDate = new Date().Format('yyyyMMddhhmmss');
+          var createDate = new Date().Format('yyyy-MM-dd hh:mm:ss');
+          var orderId = platform+r1+sysDate+r2;
+          var order = {
+              orderId:orderId,
+              orderTotal:orderTotal,
+              addressInfo:addressInfo,
+              goodsList:goodList,
+              orderStatus:'1',
+              createDate:createDate
+          };
+          doc.orderList.push(order);   
+          doc.save((err3,resp)=>{
+              if(err3){
+                  res.json({
+                      status: '1',
+                      msg: err3.message
+                  })
+              }else{
+                  res.json({
+                      resultCode: '0',
+                      resultMessage: 'success',
+                      result: {
+                        orderId:order.orderId,
+                        orderTotal:order.orderTotal
+                      }
+                  })
+              }
+          })
+        }
+    })
+
+})
+
+router.get('/orderDetail',(req,res)=>{
+    let userId = req.cookies.userId, orderId = req.param('orderId');
+    User.findOne({userId: userId},function(err,doc){
+        if(err){
+          res.json({
+            resultCode: '1',
+            resultMessage: err.message,
+            result: '' 
+          })  
+        }else{
+          var orderTotal = 0;
+          if(doc.orderList.length > 0){
+
+          
+              doc.orderList.forEach((item)=>{
+                if(item.orderId === orderId){
+                    orderTotal = item.orderTotal;
+                }
+              }) 
+              if(orderTotal>0){
+                res.json({
+                  resultCode:'0',
+                  resultMessage:'',
+                  result:{
+                    orderId:orderId,
+                    orderTotal:orderTotal
+                  }
+                })
+              }else{
+                res.json({
+                  resultCode:'120002',
+                  resultMessage:'无此订单',
+                  result:''
+                });
+              }
+          }else{
+             res.json({
+                  resultCode:'120001',
+                  resultMessage:'当前用户未创建订单',
+                  result:''
+                });
+          }
+      
+         
+        }
+    })
+
 })
 module.exports = router;

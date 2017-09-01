@@ -1,6 +1,6 @@
 <template>
     <div>
-      <Headercom></Headercom>
+      <header-com></header-com>
     
       <nav-bread ><span>Goods</span></nav-bread>
       <div class="accessory-result-page accessory-page">
@@ -78,19 +78,19 @@
         </div>
       </Modal>
       <div class="md-overlay" v-show="overlayFlag" @click="closePop"></div>
-      <Footercom></Footercom>
+      <footer-com></footer-com>
     </div>
 </template>
 <script>
     import axios from 'axios'
-    import Headercom from '@/components/Headercom'
-    import Footercom from '@/components/Footercom'
+    import HeaderCom from '@/components/HeaderCom'
+    import FooterCom from '@/components/FooterCom'
     import NavBread from '@/components/NavBread'
     import Modal from '@/components/Modal'
     export default{
         components:{
-          Headercom,
-          Footercom,
+          HeaderCom,
+          FooterCom,
           NavBread,
           Modal
         },   
