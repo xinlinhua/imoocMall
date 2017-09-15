@@ -91,7 +91,7 @@
                   <div class="item-price-total">{{list.productNum*list.salePrice | currency('$')}}</div>
                 </div>
                 <div class="cart-tab-5">
-                  <div class="cart-item-opration"  @click="delCartComfirm(list.productId)">
+                  <div class="cart-item-opration"  @click="delCartComfirm(list)">
                     <a href="javascript:;" class="item-edit-btn">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
@@ -181,7 +181,7 @@
               cartList: [ ],
               countPrice: 0,
               modalComfirm: false,
-              productId: ''
+              delProduct: ''
             }
         },
         mounted(){
@@ -233,37 +233,38 @@
           },
           increment(item){
             item.productNum++;
-            this.editCart(item);
+            this.editCart(item, 'add');
           },
           decrement(item){
              item.productNum--;
              item.productNum < 1 ? item.productNum=1 :  item.productNum=item.productNum;
              this.editCart(item);
           },
-          editCart(item){
+          editCart(item, flag){
              axios.post('/users/cartEdit',{
                 productId: item.productId,
                 productNum: item.productNum,
                 checked: item.checked
              }).then((res)=>{
                 if(res.data.resultCode === '0'){
-
+                this.$store.commit("updateCartCount",flag=="add"?1:-1);
                  console.log('success');
                 }
              })
           },
-          delCartComfirm(productId){
+          delCartComfirm(product){
             this.modalComfirm = true;
-            this.productId = productId;
+            this.delProduct = product;
           },
           delCart(){
              axios.post('/users/cartDel',{
-              productId: this.productId
+              productId: this.delProduct.productId
              }).then((res)=>{
                 if(res.data.resultCode === '0'){
 
                   this.getCartList();
                   this.modalComfirm = false;
+                  this.$store.commit("updateCartCount",-this.delProduct.productNum);
                 }
              })
           },

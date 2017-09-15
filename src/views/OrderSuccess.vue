@@ -21,14 +21,14 @@
             <h3>Congratulations! <br>Your order is under processing!</h3>
             <p>
               <span>Order ID：{{orderId}}}</span>
-              <span>Order total：{{orderTotal}}</span>
+              <span>Order total：{{orderTotal | currency('$')}}</span>
             </p>
             <div class="order-create-btn-wrap">
               <div class="btn-l-wrap">
-                <a class="btn btn--m">Cart List</a>
+                <router-link class="btn btn--m" to='/cart'>Cart List</router-link>
               </div>
               <div class="btn-r-wrap">
-                <a class="btn btn--m">Goods List</a>
+                <router-link class="btn btn--m" to="/goods">Goods List</router-link>
               </div>
             </div>
           </div>

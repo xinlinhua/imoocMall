@@ -375,4 +375,41 @@ router.get('/orderDetail',(req,res)=>{
     })
 
 })
+  router.get('/getCartCount',(req,res)=>{
+    let userId = req.cookies.userId;
+    if(userId){
+       User.findOne({userId: userId},function(err,doc){
+        if(err){
+          res.json({
+            resultCode: '1',
+            resultMessage: err.message,
+            result: '' 
+          })  
+        }else{
+           var cartList =  doc.cartList;
+           var productCount = 0;
+           cartList.map((cart)=>{
+               productCount += +cart.productNum;
+           })
+          res.json({
+            resultCode:'0',
+            resultMessage:'',
+            result: productCount
+          })
+          
+         
+        }
+      })
+    }else{
+       res.json({
+          resultCode: '1',
+          resultMessage: '用户未登录',
+          result: '' 
+        })  
+          
+    }
+   
+
+})
+  
 module.exports = router;

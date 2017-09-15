@@ -204,6 +204,7 @@
                   //console.log(res.data.resultMessage);
                   if(res.data.resultCode === '0'){
                     this.mdShowCart = true;
+                    this.$store.commit("updateCartCount",1);
                     /*this.$message({
                         message: res.data.resultMessage,
                         type: 'warning'

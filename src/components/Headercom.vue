@@ -34,7 +34,7 @@
               <a href="javascript:void(0)" class="navbar-link" @click="showLogin = true" v-if="!nickName">Login</a>
               <a href="javascript:void(0)" class="navbar-link" @click="logOut" v-if="nickName">Logout</a>
               <div class="navbar-cart-container">
-                <span class="navbar-cart-count"></span>
+                <span class="navbar-cart-count" v-if="cartCount > 0">{{cartCount }}</span>
                 <a class="navbar-link navbar-cart-link" href="/#/cart">
                   <svg class="navbar-cart-logo">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
@@ -86,12 +86,20 @@
               showLogin: false,
               userName: '',
               userPwd: '',
-              errorTips: false,
-              nickName: '' 
+              errorTips: false
+             
             }
         },
         mounted(){
-          this.checkLogin();
+          //this.checkLogin();
+        },
+        computed:{
+           nickName(){
+              return this.$store.state.nickName
+           },
+           cartCount(){
+              return this.$store.state.cartCount
+           }
         },
         methods:{
           login(){
@@ -107,7 +115,9 @@
                 this.showLogin = false;
                 if(resp.resultCode === "0"){
                   this.errorTips = false;
-                  this.nickName = resp.result.userName;
+                  //this.nickName = resp.result.userName;
+                  this.$store.commit('updateUserInfo',  resp.result.userName);
+                  this.getCartCount();
                 }else{
                   this.errorTips = true;
                 }
@@ -118,7 +128,9 @@
             axios.post('/users/logout').then((res)=>{
               var resp = res.data;
               if(resp.resultCode === '0'){
-                this.nickName = '';
+                //this.nickName = '';
+                this.$store.commit('updateUserInfo', resp.result);
+                this.$store.commit("updateCartCount", -this.$store.state.cartCount);
               }
             })
           },
@@ -129,6 +141,15 @@
                 this.nickName =  resp.result.userName;
               }
             })
+          },
+          getCartCount(){
+            axios.get("users/getCartCount").then(res=>{
+              var res = res.data;
+              if(res.resultCode=="0"){
+               
+                this.$store.commit("updateCartCount",res.result);
+              }
+            });
           }
 
         }

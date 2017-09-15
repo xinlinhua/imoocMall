@@ -39,6 +39,7 @@ const store = new Vuex.Store({
       state.nickName = nickName;
     },
     updateCartCount(state,cartCount){
+     
       state.cartCount += cartCount;
     }
   }
@@ -49,15 +50,15 @@ new Vue({
   store,
   router,
   mounted(){
-    //this.checkLogin();
-    //this.getCartCount();
+    this.checkLogin();
+    this.getCartCount();
   },
   methods:{
     checkLogin(){
       axios.get("users/checkLogin").then(res=> {
         var res = res.data;
-        if (res.status == "0") {
-          this.$store.commit("updateUserInfo", res.result);
+        if (res.resultCode == "0") {
+          this.$store.commit("updateUserInfo", res.result.userName);
         }else{
           if(this.$route.path!="/goods"){
             this.$router.push("/goods");
@@ -68,7 +69,9 @@ new Vue({
     getCartCount(){
       axios.get("users/getCartCount").then(res=>{
         var res = res.data;
-        if(res.status=="0"){
+        console.log(res);
+        if(res.resultCode=="0"){
+           console.log(res.result);
           this.$store.commit("updateCartCount",res.result);
         }
       });
